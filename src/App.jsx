@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Filters from "./components/Filters";
-import { GlobalStyle } from "./components/styled/GlobalStyle";
+import Postings from "./components/Postings";
+import { GlobalStyle } from "./components/styled/GlobalStyle.styled";
 
 const Container = styled.div`
   display: flex;
@@ -38,10 +39,7 @@ const Left = styled.div`
 
 const Right = styled.div`
   width: 70%;
-  padding: 10px;
   margin-left: 5px;
-  border-radius: 8px;
-  background-color: #fff;
 
   @media (max-width: 768px) {
     width: 100%;
@@ -58,15 +56,7 @@ function App() {
           <Filters />
         </Left>
         <Right>
-          <h1>Cards</h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Error alias
-            tempora, laboriosam voluptas mollitia saepe beatae nobis eveniet!
-            Nam quo, magnam consequatur iste reprehenderit quia ratione vitae
-            delectus commodi, ad error sequi architecto perspiciatis
-            consequuntur minus hic. Illo excepturi maxime dolores incidunt,
-            temporibus harum, nam debitis soluta sit culpa adipisci!
-          </p>
+          <Postings />
         </Right>
       </Container>
     </>
