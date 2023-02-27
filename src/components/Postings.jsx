@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Posting from "./Posting";
-import { postings } from "../mockedPostings";
+import { postings as postingsList } from "../mockedPostings";
+import { PostingsContext } from "../contexts/PostingsContext";
 
 const Postings = () => {
+  const { postings, setPostings } = useContext(PostingsContext);
+
+  useEffect(() => {
+    setPostings(postingsList);
+  }, []);
+
   return (
     <>
       {postings.map((posting) => (
