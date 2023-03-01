@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import AddressFilter from "./AddressFilter";
+import FavoritesFilter from "./FavoritesFilter";
 import OperationFilter from "./OperationFilter";
 
 const Container = styled.div`
@@ -19,6 +20,7 @@ const Filters = () => {
       <h2>Filtrado actual</h2>
       <AddressFilter />
       <OperationFilter />
+      <FavoritesFilter />
     </Container>
   );
 };

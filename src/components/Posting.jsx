@@ -183,12 +183,16 @@ const Posting = ({ posting }) => {
   const handleFavorites = () => {
     setIsFavorite(!isFavorite);
 
-    const index = favorites.findIndex((favorite) => favorite === posting_id);
+    const index = favorites.findIndex(
+      (favorite) => favorite.posting_id === posting_id
+    );
 
     if (index === -1) {
-      setFavorites([...favorites, posting_id]);
+      setFavorites([...favorites, posting]);
     } else {
-      setFavorites(favorites.filter((favorite) => favorite !== posting_id));
+      setFavorites(
+        favorites.filter((favorite) => favorite.posting_id !== posting_id)
+      );
     }
   };
 
@@ -198,7 +202,7 @@ const Posting = ({ posting }) => {
     const favoritesStored = JSON.parse(localStorage.getItem("favorites"));
     if (favoritesStored) {
       const index = favoritesStored.findIndex(
-        (favorite) => favorite === posting_id
+        (favorite) => favorite.posting_id === posting_id
       );
       if (index !== -1) {
         setIsFavorite(true);

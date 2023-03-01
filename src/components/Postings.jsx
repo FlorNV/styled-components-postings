@@ -11,7 +11,10 @@ const Postings = () => {
 
   useEffect(() => {
     setPostings(postingsList);
-    setFavorites(JSON.parse(localStorage.getItem("favorites")));
+    const list = JSON.parse(localStorage.getItem("favorites"));
+    if (list) {
+      setFavorites(list);
+    }
   }, []);
 
   return (
