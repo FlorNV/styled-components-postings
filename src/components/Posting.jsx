@@ -1,9 +1,11 @@
-import React from "react";
-import styled, { css } from "styled-components";
+import React, { useContext, useEffect, useState } from "react";
+import styled, { css, keyframes } from "styled-components";
 import { RxCounterClockwiseClock } from "react-icons/rx";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { format } from "../utils/Format";
+import { FavoritesContext } from "../contexts/FavoritesContext";
 dayjs.extend(customParseFormat);
 
 const Card = styled.div`
@@ -20,7 +22,7 @@ const Card = styled.div`
         ? "#06d6a0"
         : "none"};
   font-size: 14px;
-  position: relative;
+  box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.2);
 `;
 
 const Flex = styled.div`
@@ -35,6 +37,7 @@ const Flex = styled.div`
 
 const Left = styled.div`
   width: 35%;
+  position: relative;
 `;
 
 const Right = styled.div`
@@ -45,14 +48,6 @@ const Right = styled.div`
 const Image = styled.img`
   width: 100%;
   border-top-left-radius: 8px;
-`;
-
-const Plan = styled.span`
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  color: #fff;
-  text-shadow: 0 0 8px #000;
 `;
 
 const Prices = styled.div`
@@ -109,6 +104,56 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+const Plan = styled.span`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: #fff;
+  text-shadow: 0 0 8px #000;
+`;
+
+const animateHeart = keyframes`
+0% {
+  transform: scale(0.4);
+}
+
+50% {
+  transform: scale(1.2);
+}
+
+100% {
+  transform: scale(1);
+}
+`;
+
+const HeartButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: none;
+  background-color: #fff;
+  box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  font-size: 18px;
+  color: ${({ isFavorite }) => (isFavorite ? "#ef233c" : "#aaa")};
+  transition: color 0.3s;
+
+  span {
+    line-height: 0;
+    ${({ isFavorite }) =>
+      isFavorite &&
+      css`
+        animation: ${animateHeart} 0.5s ease-out;
+      `}
+  }
+`;
+
 const Posting = ({ posting }) => {
   const {
     posting_id,
@@ -132,6 +177,35 @@ const Posting = ({ posting }) => {
   const publishDate = dayjs(publish_date, "DD/MM/YYYY");
   const diff = dayjs().diff(publishDate, "day");
 
+  const { favorites, setFavorites } = useContext(FavoritesContext);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const handleFavorites = () => {
+    setIsFavorite(!isFavorite);
+
+    const index = favorites.findIndex((favorite) => favorite === posting_id);
+
+    if (index === -1) {
+      setFavorites([...favorites, posting_id]);
+    } else {
+      setFavorites(favorites.filter((favorite) => favorite !== posting_id));
+    }
+  };
+
+  useEffect(() => {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+
+    const favoritesStored = JSON.parse(localStorage.getItem("favorites"));
+    if (favoritesStored) {
+      const index = favoritesStored.findIndex(
+        (favorite) => favorite === posting_id
+      );
+      if (index !== -1) {
+        setIsFavorite(true);
+      }
+    }
+  }, [favorites, posting_id]);
+
   return (
     <Card color={publication_plan}>
       <Flex>
@@ -144,6 +218,11 @@ const Posting = ({ posting }) => {
               ? "Destacado"
               : "Simple"}
           </Plan>
+          <HeartButton onClick={handleFavorites} isFavorite={isFavorite}>
+            <span>
+              <FaHeart />
+            </span>
+          </HeartButton>
         </Left>
         <Right>
           <Title>{title}</Title>
