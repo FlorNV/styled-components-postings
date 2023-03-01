@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import AddressFilter from "./AddressFilter";
 import OperationFilter from "./OperationFilter";
 
 const Container = styled.div`
-  padding: 14px;
+  padding: 10px 14px 0 14px;
   border-radius: 8px;
   background-color: #fff;
   position: -webkit-sticky;
@@ -16,11 +17,7 @@ const Filters = () => {
   return (
     <Container>
       <h2>Filtrado actual</h2>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa quae
-        cupiditate rerum accusantium accusamus quas! Quia reiciendis modi eaque
-        at.
-      </p>
+      <AddressFilter />
       <OperationFilter />
     </Container>
   );

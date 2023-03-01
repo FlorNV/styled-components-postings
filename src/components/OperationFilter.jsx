@@ -3,31 +3,12 @@ import styled from "styled-components";
 import { PostingsContext } from "../contexts/PostingsContext";
 import { postings as postingsList } from "../mockedPostings";
 import arrow from "../assets/down_arrow.svg";
-
-const Container = styled.div`
-  overflow: hidden;
-  transition: height 0.5s ease-out;
-  height: ${({ isToggled }) => (isToggled ? "160px" : "30px")};
-`;
-
-const Title = styled.h3`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 18px;
-  cursor: pointer;
-  margin: 0;
-`;
-
-const DropdownMenu = styled.div`
-  margin-top: 20px;
-`;
-
-const Image = styled.img`
-  width: 20px;
-  transition: transform 0.5s ease-out;
-  transform: rotate(${({ isToggled }) => (isToggled ? "180deg" : "0deg")});
-`;
+import {
+  Container,
+  Title,
+  DropdownMenu,
+  Image,
+} from "./styled/Dropdown.styled";
 
 const Label = styled.label`
   font-size: 14px;
@@ -82,7 +63,7 @@ const OperationFilter = () => {
   }, [operation, setPostings]);
 
   return (
-    <Container isToggled={show}>
+    <Container height={show && "180px"}>
       <Title onClick={() => setShow(!show)}>
         <span>Tipo de operación</span>
         <Image src={arrow} isToggled={show} />
