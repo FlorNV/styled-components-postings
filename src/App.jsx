@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Filters from "./components/Filters";
 import Postings from "./components/Postings";

@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { format } from "../utils/Format";
 import { FavoritesContext } from "../contexts/FavoritesContext";
+import Modal from "./Modal";
 dayjs.extend(customParseFormat);
 
 const Card = styled.div`
@@ -179,6 +180,7 @@ const Posting = ({ posting }) => {
 
   const { favorites, setFavorites } = useContext(FavoritesContext);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleFavorites = () => {
     setIsFavorite(!isFavorite);
@@ -211,49 +213,54 @@ const Posting = ({ posting }) => {
   }, [favorites, posting_id]);
 
   return (
-    <Card color={publication_plan}>
-      <Flex>
-        <Left>
-          <Image src={posting_picture} />
-          <Plan>
-            {publication_plan === "SUPERHIGHLIGHTED"
-              ? "Super Destacado"
-              : publication_plan === "HIGHLIGHTED"
-              ? "Destacado"
-              : "Simple"}
-          </Plan>
-          <HeartButton onClick={handleFavorites} isFavorite={isFavorite}>
-            <span>
-              <FaHeart />
-            </span>
-          </HeartButton>
-        </Left>
-        <Right>
-          <Title>{title}</Title>
-          <Location>
-            {address}, {zone}, {city}
-          </Location>
-          <Description>{posting_description}</Description>
-        </Right>
-      </Flex>
-      <Flex isBottom>
-        <Left>
-          <Prices>
-            <Price>{formattedPrice}</Price>
-            {expenses && <div>+ {formattedExpenses} Expensas</div>}
-          </Prices>
-        </Left>
-        <Right>
-          <Flex isBottom>
-            <Box>
-              <RxCounterClockwiseClock />
-              <span>Publicado hace {diff} días</span>
-            </Box>
-            <Button>Contactar</Button>
-          </Flex>
-        </Right>
-      </Flex>
-    </Card>
+    <>
+      <Card color={publication_plan}>
+        <Flex>
+          <Left>
+            <Image src={posting_picture} />
+            <Plan>
+              {publication_plan === "SUPERHIGHLIGHTED"
+                ? "Super Destacado"
+                : publication_plan === "HIGHLIGHTED"
+                ? "Destacado"
+                : "Simple"}
+            </Plan>
+            <HeartButton onClick={handleFavorites} isFavorite={isFavorite}>
+              <span>
+                <FaHeart />
+              </span>
+            </HeartButton>
+          </Left>
+          <Right>
+            <Title>{title}</Title>
+            <Location>
+              {address}, {zone}, {city}
+            </Location>
+            <Description>{posting_description}</Description>
+          </Right>
+        </Flex>
+        <Flex isBottom>
+          <Left>
+            <Prices>
+              <Price>{formattedPrice}</Price>
+              {expenses && <div>+ {formattedExpenses} Expensas</div>}
+            </Prices>
+          </Left>
+          <Right>
+            <Flex isBottom>
+              <Box>
+                <RxCounterClockwiseClock />
+                <span>Publicado hace {diff} días</span>
+              </Box>
+              <Button onClick={() => setOpen(true)}>Contactar</Button>
+            </Flex>
+          </Right>
+        </Flex>
+      </Card>
+      <Modal open={open} setOpen={setOpen} title={title}>
+        Form
+      </Modal>
+    </>
   );
 };
 
